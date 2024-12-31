@@ -254,6 +254,8 @@ We would like to thank the following for their contributions and support in maki
 -   **Contributors**: A special thank you to all contributors for their time and effort in improving the project.
 
 We also acknowledge all open-source projects and libraries used within this platform!
+
+D1B x Aymanoviche
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -261,3 +263,4 @@ We also acknowledge all open-source projects and libraries used within this plat
 <!-- MARKDOWN LINKS & IMAGES -->
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
+
