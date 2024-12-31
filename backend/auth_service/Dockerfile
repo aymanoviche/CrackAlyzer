@@ -1,0 +1,13 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY ./auth_service/requirements.txt /app/requirements.txt
+
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+COPY ./auth_service /app
+
+EXPOSE 8000
+
+CMD ["uvicorn", "main:app", "--reload"]
