@@ -1,7 +1,7 @@
 <br />
 <div align="center" id="readme-top">
   <a href="https://github.com/OussamaFannouch/CrackAlyzer">
-    <img src="https://raw.githubusercontent.com/OussamaFannouch/CrackAlyzer/af87da223794e549f6b53a9151f40da5f5743b19/frontend/media/upper_ic.png?token=GHSAT0AAAAAAC3WYS3NZTSNGP3TZB27QF7OZ3R2E6Q" alt="Logo" width="80" height="80">
+    <img src="https://raw.githubusercontent.com/OussamaFannouch/CrackAlyzer/refs/heads/main/frontend/media/upper_ic.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">CrackAlyzer</h3>
@@ -121,10 +121,9 @@ Before you begin, ensure you have the following installed on your system:
     -   Activate the virtual environment:
         
         ```bash
-        # On MacOS/Linux
-        source env/bin/activate  
-        # On Windows: 
-        .\env\Scripts\activate
+        python -m venv env
+        source env/bin/activate  # For Linux/macOS
+        .\env\Scripts\activate  # For Windows
         ```
         
     -   Install dependencies:
@@ -215,8 +214,8 @@ soon....
 -   **D1B** – Backend & Frontend Development (using Fastapi, MongoDB, React)
 -   **Aymanoviche** – Backend Development (using Fastapi, MongoDB)
 
-<a href="https://github.com/OussamaFannouch/CrackAlyzer/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=OussamaFannouch/CrackAlyzer" alt="contrib.rocks image" />
+<a href="https://github.com/oussamafannouch/CrackAlyzer/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=oussamafannouch/CrackAlyzer" />
 </a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -236,7 +235,7 @@ This project is licensed under the MIT License - see the `LICENSE.txt` file for 
 
 Oussama Fannouch - [@OussamaFannouch](https://www.linkedin.com/in/oussamafannouch/) - oussamafannouch@gmail.com
 
-Ayman Erroussi - [@OussamaFannouch](https://www.linkedin.com/in/ayman-erroussi/) - erroussiayman@gmail.com
+Ayman Erroussi - [@ErroussiAyman](https://www.linkedin.com/in/ayman-erroussi/) - erroussiayman@gmail.com
 
 Project Link: [https://github.com/OussamaFannouch/CrackAlyzer](https://github.com/OussamaFannouch/CrackAlyzer)
 
@@ -254,6 +253,8 @@ We would like to thank the following for their contributions and support in maki
 -   **Contributors**: A special thank you to all contributors for their time and effort in improving the project.
 
 We also acknowledge all open-source projects and libraries used within this platform!
+
+D1B x Aymanoviche
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -261,3 +262,4 @@ We also acknowledge all open-source projects and libraries used within this plat
 <!-- MARKDOWN LINKS & IMAGES -->
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
+
