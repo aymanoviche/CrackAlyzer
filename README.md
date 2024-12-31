@@ -1,7 +1,7 @@
 <br />
 <div align="center" id="readme-top">
   <a href="https://github.com/OussamaFannouch/CrackAlyzer">
-    <img src="https://raw.githubusercontent.com/OussamaFannouch/CrackAlyzer/af87da223794e549f6b53a9151f40da5f5743b19/frontend/media/upper_ic.png?token=GHSAT0AAAAAAC3WYS3NZTSNGP3TZB27QF7OZ3R2E6Q" alt="Logo" width="80" height="80">
+    <img src="https://raw.githubusercontent.com/OussamaFannouch/CrackAlyzer/refs/heads/main/frontend/media/upper_ic.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">CrackAlyzer</h3>
