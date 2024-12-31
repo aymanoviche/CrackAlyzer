@@ -121,10 +121,9 @@ Before you begin, ensure you have the following installed on your system:
     -   Activate the virtual environment:
         
         ```bash
-        # On MacOS/Linux
-        source env/bin/activate  
-        # On Windows: 
-        .\env\Scripts\activate
+        python -m venv env
+        source env/bin/activate  # For Linux/macOS
+        .\env\Scripts\activate  # For Windows
         ```
         
     -   Install dependencies:
