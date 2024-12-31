@@ -236,7 +236,7 @@ This project is licensed under the MIT License - see the `LICENSE.txt` file for 
 
 Oussama Fannouch - [@OussamaFannouch](https://www.linkedin.com/in/oussamafannouch/) - oussamafannouch@gmail.com
 
-Ayman Erroussi - [@OussamaFannouch](https://www.linkedin.com/in/ayman-erroussi/) - erroussiayman@gmail.com
+Ayman Erroussi - [@ErroussiAyman](https://www.linkedin.com/in/ayman-erroussi/) - erroussiayman@gmail.com
 
 Project Link: [https://github.com/OussamaFannouch/CrackAlyzer](https://github.com/OussamaFannouch/CrackAlyzer)
 
