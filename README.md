@@ -215,8 +215,8 @@ soon....
 -   **D1B** – Backend & Frontend Development (using Fastapi, MongoDB, React)
 -   **Aymanoviche** – Backend Development (using Fastapi, MongoDB)
 
-<a href="https://github.com/OussamaFannouch/CrackAlyzer/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=OussamaFannouch/CrackAlyzer" alt="contrib.rocks image" />
+<a href="https://github.com/oussamafannouch/CrackAlyzer/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=oussamafannouch/CrackAlyzer" />
 </a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
