@@ -10,3 +10,4 @@ python_jose
 starlette
 uvicorn
 python-multipart
+httpx

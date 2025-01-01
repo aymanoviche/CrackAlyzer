@@ -516,3 +516,46 @@ html, body {
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
+
+/* Breach checker */
+
+.results-section {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.results-title {
+  color: #333;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.result-message {
+  padding: 1rem;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.result-message.leaked {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+
+.result-message.safe {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.breach-count {
+  color: #c62828;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}

@@ -58,8 +58,8 @@ export const PasswordAnalyzer = () => {
             <img src="../../../media/logo.png" alt="CrackAlyzer Logo" className="nav-logo" />
           </Link>
           <div className="nav-links">
-            <Link to="/analyze" className="nav-link">Password Analyzer</Link>
             <Link to="/dashboard" className="nav-link">Dashboard</Link>
+            <Link to="/check-breach" className="nav-link">Breach Checker</Link>
             <button onClick={handleLogout} className="nav-link nav-link-danger">Logout</button>
           </div>
         </nav>

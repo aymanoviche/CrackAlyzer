@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const protectedRoutes = ['/dashboard', '/password-analyzer'];
+  const protectedRoutes = ['/dashboard', '/password-analyzer', '/check-breach'];
 
   useEffect(() => {
     const isProtectedRoute = protectedRoutes.includes(location.pathname);
