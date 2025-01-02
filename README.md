@@ -47,12 +47,12 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
+<details>
 <img src="https://i.imgur.com/HthsLOX.png" alt="Logo" width="" height="">
 <img src="https://i.imgur.com/5BfLcpd.png" alt="Logo" width="" height="">
 <img src="https://imgur.com/6yrTA6T.png" alt="Logo" width="" height="">
 <img src="https://imgur.com/6jwnw8y.png" alt="Logo" width="" height="">
-
+</details>
 
 
 This project is a comprehensive full-stack application designed to enhance password security. It offers powerful features such as:
