@@ -22,6 +22,7 @@ class PasswordRequest(BaseModel):
 # Add response model for history
 class BreachHistoryResponse(BaseModel):
     timestamp: datetime
+    password: str
     status: str
     message: str
     count: int
@@ -33,10 +34,12 @@ async def check_breach(request: PasswordRequest, token: str = Depends(oauth2_sch
         count = await check_password_breach(request.password)
         
         result = {
+            "password": request.password,
             "status": "Your Password Has Been Leaked",
             "message": f"This password has been seen {count:,} times :( Please do not use it!)",
             "count": count
         } if count > 0 else {
+            "password": request.password,
             "status": "Your Password Is Safe :)",
             "message": "This password has not been leaked before. You're good to go!",
             "count": 0
@@ -60,14 +63,13 @@ async def check_breach(request: PasswordRequest, token: str = Depends(oauth2_sch
     except Exception as e:
         raise HTTPException(status_code=500, detail="An unexpected error occurred")
 
-# Add new endpoint to get history
 @check_breach_router.get("/history", response_model=List[BreachHistoryResponse])
 async def get_breach_history(token: str = Depends(oauth2_scheme), current_user: UserModel = Depends(get_current_user)):
     try:
         # Get user's breach check history
         history = list(BreachHistory.find(
             {"user_id": current_user.id},
-            {"_id": 0, "user_id": 0, "password": 0}  # Exclude sensitive data
+            {"_id": 0, "user_id": 0}  # Exclude only '_id' and 'user_id', but include 'password'
         ).sort("timestamp", -1))  # Sort by timestamp descending
         
         return history
