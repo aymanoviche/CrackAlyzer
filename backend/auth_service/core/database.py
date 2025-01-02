@@ -10,15 +10,8 @@ print('Connected to MongoDB...')
 
 db = client[settings.MONGO_INITDB_DATABASE]
 User = db.users
+PasswordAnalyzeHistory = db.password_analyze_history
 
-# try:
-#     client.admin.command('ping')
-#     print("Pinged your deployment. You successfully connected to MongoDB!")
-# except Exception as e:
-#     print(e)
 
 def get_db():
-    # try:
     yield db
-    # finally:
-    #     client.close()
