@@ -52,6 +52,7 @@ export const Signup = () => {
         <div className="form-container">
           <form className="form" onSubmit={handleSubmit}>
             <p className="title">Signup</p>
+            {errors.general && <p className="error-message">{errors.general}</p>}
             <label>
               <input
                 className="input"
