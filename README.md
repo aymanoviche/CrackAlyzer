@@ -189,9 +189,9 @@ Now you’re ready to explore the platform!
 <h3> Authentification: </h3>
 <img src= "https://imgur.com/XDPYZhO.png">
 <h3> Password Analyzer : </h3>
-soon....
+<img src="https://imgur.com/QkXsjrQ.png">
 <h3> Password Cracker : </h3>
-soon....
+<img src="https://imgur.com/C2kZ3jP.png">
 <h3>Password Breach Checker :</h3>
 soon....
 
