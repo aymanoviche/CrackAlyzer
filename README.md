@@ -187,7 +187,7 @@ Now you’re ready to explore the platform!
 <h3> File Structure:</h3>
 <img src="https://imgur.com/aBX2f1o.png">
 <h3> Authentification: </h3>
-<img src= "https://imgur.com/pGjzuGX.png">
+<img src= "https://imgur.com/XDPYZhO.png">
 <h3> Password Analyzer : </h3>
 soon....
 <h3> Password Cracker : </h3>
