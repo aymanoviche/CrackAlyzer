@@ -207,7 +207,6 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     user = db['users'].find_one({"_id": user_id})
     if not user:
         raise credentials_exception
-
     if not user.get('is_active') or user.get('account_locked'):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -215,4 +214,5 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    return UserModel(**user)
+    user_model = UserModel(id=str(user["_id"]), **user)
+    return user_model
