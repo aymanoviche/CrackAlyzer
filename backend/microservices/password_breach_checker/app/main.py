@@ -1,65 +1,75 @@
-from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException, Depends, APIRouter, status
-from datetime import datetime
+from fastapi.middleware.cors import CORSMiddleware
+from backend.microservices.password_breach_checker.app.utils import check_password_breach
 from backend.auth_service.users.models import UserModel
-from backend.microservices.password_analyzer.app.utils import analyze_password_strength, generate_strong_password
 from backend.auth_service.core.security import oauth2_scheme, get_current_user
-from backend.auth_service.core.database import PasswordAnalyzeHistory 
+from pydantic import BaseModel
+from backend.auth_service.core.database import BreachHistory
+from datetime import datetime
+from typing import List
 
-app = FastAPI(title="Password Analyzer Microservice")
+app = FastAPI(title="Password Breach Checker Microservice")
 
-class PasswordAnalysisRequest(BaseModel):
-    password: str
-
-class PasswordAnalysisResponse(BaseModel):
-    strength: str
-    score: float
-    details: dict
-    suggested_password: str = None
-
-analyzer_router = APIRouter(
-    prefix="/analyze",
-    tags=["analyze"],
+check_breach_router = APIRouter(
+    prefix="/check-breach",
+    tags=["check-breach"],
     responses={404: {"description": "Not found"}},
 )
 
-@analyzer_router.post("/", status_code=status.HTTP_200_OK, response_model=PasswordAnalysisResponse)
-def analyze_password(request: PasswordAnalysisRequest, token: str = Depends(oauth2_scheme), current_user: UserModel = Depends(get_current_user)):
+class PasswordRequest(BaseModel):
+    password: str
+
+# Add response model for history
+class BreachHistoryResponse(BaseModel):
+    timestamp: datetime
+    status: str
+    message: str
+    count: int
+
+# Modify the check_breach endpoint to save history
+@check_breach_router.post("/", status_code=status.HTTP_200_OK)
+async def check_breach(request: PasswordRequest, token: str = Depends(oauth2_scheme), current_user: UserModel = Depends(get_current_user)):
     try:
-        analysis_result = analyze_password_strength(request.password)
+        count = await check_password_breach(request.password)
         
-        # Generate suggestion if password is weak
-        suggested_password = None
-        if analysis_result['strength'] in ['Very Weak', 'Weak', 'Moderate', 'Strong']:
-            suggested_password = generate_strong_password(request.password)
+        result = {
+            "status": "Your Password Has Been Leaked",
+            "message": f"This password has been seen {count:,} times :( Please do not use it!)",
+            "count": count
+        } if count > 0 else {
+            "status": "Your Password Is Safe :)",
+            "message": "This password has not been leaked before. You're good to go!",
+            "count": 0
+        }
         
-        # Save the analysis result to the database
-        analysis_record = {
+        # Save the check result to database
+        history_record = {
             "user_id": current_user.id,
             "password": request.password,
-            "strength": analysis_result['strength'],
-            "score": analysis_result['score'],
-            "details": analysis_result['details'],
-            "suggested_password": suggested_password or "",
+            "status": result["status"],
+            "message": result["message"],
+            "count": result["count"],
             "timestamp": datetime.utcnow()
         }
-        PasswordAnalyzeHistory.insert_one(analysis_record)  # Use the collection
+        BreachHistory.insert_one(history_record)
         
-        return PasswordAnalysisResponse(
-            strength=analysis_result['strength'],
-            score=analysis_result['score'],
-            details=analysis_result['details'],
-            suggested_password=suggested_password or ""
-        )
+        return result
+        
+    except HTTPException as e:
+        raise e
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=500, detail="An unexpected error occurred")
 
-@analyzer_router.get("/history", status_code=status.HTTP_200_OK)
-def get_password_analysis_history(token: str = Depends(oauth2_scheme), current_user: UserModel = Depends(get_current_user)):
+# Add new endpoint to get history
+@check_breach_router.get("/history", response_model=List[BreachHistoryResponse])
+async def get_breach_history(token: str = Depends(oauth2_scheme), current_user: UserModel = Depends(get_current_user)):
     try:
-        history = list(PasswordAnalyzeHistory.find({"user_id": current_user.id}, {"_id": 0}))
-        return {"history": history}
+        # Get user's breach check history
+        history = list(BreachHistory.find(
+            {"user_id": current_user.id},
+            {"_id": 0, "user_id": 0, "password": 0}  # Exclude sensitive data
+        ).sort("timestamp", -1))  # Sort by timestamp descending
+        
+        return history
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
-
-app.include_router(analyzer_router)
+        raise HTTPException(status_code=500, detail="Error retrieving breach history")

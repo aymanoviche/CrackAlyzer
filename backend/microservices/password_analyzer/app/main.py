@@ -1,8 +1,10 @@
 from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException, Depends, APIRouter, status
+from datetime import datetime
 from backend.auth_service.users.models import UserModel
 from backend.microservices.password_analyzer.app.utils import analyze_password_strength, generate_strong_password
 from backend.auth_service.core.security import oauth2_scheme, get_current_user
+from backend.auth_service.core.database import PasswordAnalyzeHistory 
 
 app = FastAPI(title="Password Analyzer Microservice")
 
@@ -31,6 +33,18 @@ def analyze_password(request: PasswordAnalysisRequest, token: str = Depends(oaut
         if analysis_result['strength'] in ['Very Weak', 'Weak', 'Moderate', 'Strong']:
             suggested_password = generate_strong_password(request.password)
         
+        # Save the analysis result to the database
+        analysis_record = {
+            "user_id": current_user.id,
+            "password": request.password,
+            "strength": analysis_result['strength'],
+            "score": analysis_result['score'],
+            "details": analysis_result['details'],
+            "suggested_password": suggested_password or "",
+            "timestamp": datetime.utcnow()
+        }
+        PasswordAnalyzeHistory.insert_one(analysis_record)  # Use the collection
+        
         return PasswordAnalysisResponse(
             strength=analysis_result['strength'],
             score=analysis_result['score'],
@@ -40,8 +54,13 @@ def analyze_password(request: PasswordAnalysisRequest, token: str = Depends(oaut
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-app.include_router(analyzer_router)
+@analyzer_router.get("/history", status_code=status.HTTP_200_OK)
+def get_password_analysis_history(token: str = Depends(oauth2_scheme), current_user: UserModel = Depends(get_current_user)):
+    try:
+        # Retrieve the user's analysis history
+        history = list(PasswordAnalyzeHistory.find({"user_id": current_user.id}, {"_id": 0}))
+        return {"history": history}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-# if __name__ == "__main__": 
-#     import uvicorn 
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
+app.include_router(analyzer_router)

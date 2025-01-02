@@ -11,7 +11,7 @@ print('Connected to MongoDB...')
 db = client[settings.MONGO_INITDB_DATABASE]
 User = db.users
 PasswordAnalyzeHistory = db.password_analyze_history
-
+BreachHistory = db.breach_history
 
 def get_db():
     yield db
