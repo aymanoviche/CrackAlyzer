@@ -47,9 +47,9 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+<img src="https://i.imgur.com/HthsLOX.png" alt="Logo" width="" height="">
 <details>
-  <summary>Images from the project</summary>
-  <img src="https://i.imgur.com/HthsLOX.png" alt="Logo" width="" height="">
+  <summary>More images from the project</summary>
   <img src="https://i.imgur.com/5BfLcpd.png" alt="Logo" width="" height="">
   <img src="https://imgur.com/6yrTA6T.png" alt="Logo" width="" height="">
   <img src="https://imgur.com/6jwnw8y.png" alt="Logo" width="" height="">
