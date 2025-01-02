@@ -215,7 +215,7 @@ soon....
 -   **Aymanoviche** – Backend Development (using Fastapi, MongoDB)
 
 <a href="https://github.com/oussamafannouch/CrackAlyzer/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=oussamafannouch/CrackAlyzer" />
+  <img src="https://contrib.rocks/image?repo=OussamaFannouch/CrackAlyzer" />
 </a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
