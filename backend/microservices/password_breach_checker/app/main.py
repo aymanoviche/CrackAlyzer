@@ -7,6 +7,10 @@ from pydantic import BaseModel
 from backend.auth_service.core.database import BreachHistory
 from datetime import datetime
 from typing import List
+from concurrent.futures import ThreadPoolExecutor
+import asyncio
+
+thread_pool = ThreadPoolExecutor(max_workers=5)
 
 app = FastAPI(title="Password Breach Checker Microservice")
 
@@ -31,7 +35,13 @@ class BreachHistoryResponse(BaseModel):
 @check_breach_router.post("/", status_code=status.HTTP_200_OK)
 async def check_breach(request: PasswordRequest, token: str = Depends(oauth2_scheme), current_user: UserModel = Depends(get_current_user)):
     try:
-        count = await check_password_breach(request.password)
+        loop = asyncio.get_running_loop()
+        
+        # Check breach in thread pool
+        count = await loop.run_in_executor(
+            thread_pool,
+            lambda: asyncio.run(check_password_breach(request.password))
+        )
         
         result = {
             "password": request.password,
@@ -45,7 +55,7 @@ async def check_breach(request: PasswordRequest, token: str = Depends(oauth2_sch
             "count": 0
         }
         
-        # Save the check result to database
+        # Save to DB using thread pool
         history_record = {
             "user_id": current_user.id,
             "password": request.password,
@@ -54,24 +64,33 @@ async def check_breach(request: PasswordRequest, token: str = Depends(oauth2_sch
             "count": result["count"],
             "timestamp": datetime.utcnow()
         }
-        BreachHistory.insert_one(history_record)
+        
+        await loop.run_in_executor(
+            thread_pool,
+            BreachHistory.insert_one,
+            history_record
+        )
         
         return result
         
-    except HTTPException as e:
-        raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail="An unexpected error occurred")
 
 @check_breach_router.get("/history", response_model=List[BreachHistoryResponse])
 async def get_breach_history(token: str = Depends(oauth2_scheme), current_user: UserModel = Depends(get_current_user)):
     try:
-        # Get user's breach check history
-        history = list(BreachHistory.find(
-            {"user_id": current_user.id},
-            {"_id": 0, "user_id": 0}  # Exclude only '_id' and 'user_id', but include 'password'
-        ).sort("timestamp", -1))  # Sort by timestamp descending
+        loop = asyncio.get_running_loop()
+        
+        # Get history using thread pool
+        history = await loop.run_in_executor(
+            thread_pool,
+            lambda: list(BreachHistory.find(
+                {"user_id": current_user.id},
+                {"_id": 0, "user_id": 0}
+            ).sort("timestamp", -1))
+        )
         
         return history
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error retrieving breach history")
+

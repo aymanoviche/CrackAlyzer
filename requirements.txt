@@ -11,3 +11,4 @@ starlette
 uvicorn
 python-multipart
 httpx
+asyncio

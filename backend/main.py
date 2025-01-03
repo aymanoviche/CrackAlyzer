@@ -31,7 +31,13 @@ app.add_middleware(
 
 app.add_middleware(AuthenticationMiddleware, backend=JWTAuth())
 
-
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    # Shutdown all executors
+    user_executor.shutdown(wait=True)
+    auth_executor.shutdown(wait=True)

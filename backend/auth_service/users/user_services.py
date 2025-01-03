@@ -5,7 +5,7 @@ from datetime import datetime
 from pymongo.database import Database
 
 async def create_user_account(data: UserModel, db: Database):
-    user = db['users'].find_one({"email": data.email})
+    user = await db['users'].find_one({"email": data.email})
     if user:
         raise HTTPException(status_code=422, detail="Email is already registered with us.")
 
@@ -23,5 +23,5 @@ async def create_user_account(data: UserModel, db: Database):
         "updated_at": datetime.utcnow(),
         "last_login": None
     }
-    db['users'].insert_one(new_user)
+    await db['users'].insert_one(new_user)
     return new_user
