@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 import httpx
 from bs4 import BeautifulSoup
+import base64
 
 app = FastAPI()
 
@@ -53,6 +54,16 @@ async def decrypt_sha1(sha1_hash: str):
         return {"sha1_hash": sha1_hash, "decrypted_string": decrypted_string}
     
     raise HTTPException(status_code=404, detail="Decrypted string not found.")
+
+@app.get("/decode-base64/{base64_input}")
+async def decode_base64(base64_input: str):
+    try:
+        # Decode the Base64 input
+        decoded_bytes = base64.b64decode(base64_input, validate=True)
+        decoded_string = decoded_bytes.decode("utf-8")  # Convert bytes to string
+        return {"base64_input": base64_input, "decoded_string": decoded_string}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Invalid Base64 input: {e}")
 
 # *********************************************************************************************************************
 
