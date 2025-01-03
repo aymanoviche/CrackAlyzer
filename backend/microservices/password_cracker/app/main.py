@@ -53,7 +53,8 @@ async def decrypt_sha1(sha1_hash: str):
         return {"sha1_hash": sha1_hash, "decrypted_string": decrypted_string}
     
     raise HTTPException(status_code=404, detail="Decrypted string not found.")
-# ...existing code...
+
+# *********************************************************************************************************************
 
 @app.get("/decrypt-sha224/{sha224_hash}")
 async def decrypt_sha224(sha224_hash: str):
@@ -82,37 +83,32 @@ async def decrypt_sha256(sha256_hash: str):
     
     async with httpx.AsyncClient() as client:
         try:
-            # Step 1: Send GET request to retrieve CSRF token
-            get_response = await client.get(url)
-            get_response.raise_for_status()
-            
-            # Parse HTML to find CSRF token
-            soup = BeautifulSoup(get_response.text, "html.parser")
-            csrf_input = soup.find("input", {"name": "__csrf"})
-            if not csrf_input:
-                raise HTTPException(status_code=400, detail="CSRF token not found.")
-            csrf_token = csrf_input.get("value")
-            
-            # Step 2: Send POST request with hash and CSRF token
-            data = {
-                "hash": sha256_hash,
-                "__csrf": csrf_token
-            }
+            # Send POST request with hash
+            data = {"hash": sha256_hash}
             post_response = await client.post(url, data=data, headers=headers)
             post_response.raise_for_status()
             
             # Parse POST response to get decrypted string
             soup = BeautifulSoup(post_response.text, "html.parser")
+            
+            # Try to find the decrypted string in the <div> or <textarea>
             result_div = soup.find("div", {"contenteditable": "false"})
-            if not result_div:
+            result_textarea = soup.find("textarea", {"id": "formattedText"})
+            
+            if result_div:
+                decrypted_string = result_div.text.strip()
+            elif result_textarea:
+                decrypted_string = result_textarea.text.strip()
+            else:
                 raise HTTPException(status_code=404, detail="Unable to find the decrypted string in the response.")
-            decrypted_string = result_div.text.strip()
+            
             return {"sha256_hash": sha256_hash, "decrypted_string": decrypted_string}
         
         except httpx.HTTPStatusError as e:
             raise HTTPException(status_code=500, detail=f"Failed to fetch data from the website. HTTP error: {e}")
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {e}")
+        
 @app.get("/decrypt-sha384/{sha384_hash}")
 async def decrypt_sha384(sha384_hash: str):
     url = f"https://md5hashing.net/hash/sha384/{sha384_hash}"
