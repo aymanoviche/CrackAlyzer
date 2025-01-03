@@ -108,7 +108,6 @@ async def decrypt_sha256(sha256_hash: str):
             raise HTTPException(status_code=500, detail=f"Failed to fetch data from the website. HTTP error: {e}")
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {e}")
-        
 @app.get("/decrypt-sha384/{sha384_hash}")
 async def decrypt_sha384(sha384_hash: str):
     url = f"https://md5hashing.net/hash/sha384/{sha384_hash}"
