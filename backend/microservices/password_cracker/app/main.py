@@ -58,7 +58,6 @@ async def decrypt_sha1(sha1_hash: str):
 @app.get("/decode-base64/{base64_input}")
 async def decode_base64(base64_input: str):
     try:
-        # Decode the Base64 input
         decoded_bytes = base64.b64decode(base64_input, validate=True)
         decoded_string = decoded_bytes.decode("utf-8")  # Convert bytes to string
         return {"base64_input": base64_input, "decoded_string": decoded_string}
