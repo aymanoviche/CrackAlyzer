@@ -191,9 +191,9 @@ Now you’re ready to explore the platform!
 <h3> Password Analyzer : </h3>
 <img src="https://imgur.com/QkXsjrQ.png">
 <h3> Password Cracker : </h3>
-<img src="https://imgur.com/C2kZ3jP.png">
+<img src="https://i.imgur.com/jOgJcV6.png">
 <h3>Password Breach Checker :</h3>
-soon....
+<img src="https://imgur.com/C2kZ3jP.png">
 
 <!-- ROADMAP -->
 ## Roadmap
