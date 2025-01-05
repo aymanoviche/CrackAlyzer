@@ -40,6 +40,7 @@ export const BreachChecker = () => {
           <div className="nav-links">
             <Link to="/dashboard" className="nav-link">Dashboard</Link>
             <Link to="/analyze" className="nav-link">Password Analyzer</Link>
+            <Link to="/password-cracker" className="dashboard-link">Password Cracker</Link>
             <button onClick={handleLogout} className="nav-link nav-link-danger">Logout</button>
           </div>
         </nav>

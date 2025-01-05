@@ -6,6 +6,7 @@ import { Dashboard } from './auth/components/Dashboard';
 import { PrivateRoute } from './auth/components/PrivateRoute';
 import { PasswordAnalyzer } from './auth/components/PasswordAnalyzer';
 import { BreachChecker } from './auth/components/BreachChecker';
+import { PasswordCracker } from './auth/components/PasswordCracker';
 import { MainLayout } from './MainLayout.jsx';
 
 export default function App() {
@@ -37,6 +38,14 @@ export default function App() {
             element={
               <PrivateRoute>
                 <BreachChecker/>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/password-cracker"
+            element={
+              <PrivateRoute>
+                <PasswordCracker />
               </PrivateRoute>
             }
           />

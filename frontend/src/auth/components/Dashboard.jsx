@@ -1,57 +1,89 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useState, useEffect } from 'react';
-import '../../styles/MainLayout.css';
 
 export const Dashboard = () => {
   const { user, token, logout } = useAuth();
   const navigate = useNavigate();
   const [analyzeHistory, setAnalyzeHistory] = useState([]);
   const [breachHistory, setBreachHistory] = useState([]);
+  const [crackerHistory, setCrackerHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (token) {
-      Promise.all([fetchAnalyzeHistory(), fetchBreachHistory()]);
+      Promise.all([
+        fetchAnalyzeHistory(),
+        fetchBreachHistory(),
+        fetchCrackerHistory()
+      ]).finally(() => setIsLoading(false));
     }
   }, [token]);
 
   const fetchAnalyzeHistory = async () => {
     try {
       const response = await fetch('http://localhost:8000/analyze/history', {
-        headers: {
-          'Authorization': `Bearer ${token}`
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       });
-
-      if (!response.ok) throw new Error('Failed to fetch history');
+      
+      if (!response.ok) throw new Error('Failed to fetch analyze history');
       
       const data = await response.json();
-      setAnalyzeHistory(data.history || []);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
+      const historyArray = Array.isArray(data) ? data : 
+                          data.history ? data.history : [];
+      setAnalyzeHistory(historyArray);
+    } catch (error) {
+      console.error('Analyze history error:', error);
+      setAnalyzeHistory([]);
+      setError(error.message);
     }
   };
 
   const fetchBreachHistory = async () => {
     try {
       const response = await fetch('http://localhost:8000/check-breach/history', {
-        headers: {
-          'Authorization': `Bearer ${token}`
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       });
-
+      
       if (!response.ok) throw new Error('Failed to fetch breach history');
       
       const data = await response.json();
-      setBreachHistory(Array.isArray(data) ? data : []);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
+      const historyArray = Array.isArray(data) ? data : 
+                          data.history ? data.history : [];
+      setBreachHistory(historyArray);
+    } catch (error) {
+      console.error('Breach history error:', error);
+      setBreachHistory([]);
+      setError(error.message);
+    }
+  };
+
+  const fetchCrackerHistory = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/password-cracker/history', {
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) throw new Error('Failed to fetch cracker history');
+      
+      const data = await response.json();
+      const historyArray = Array.isArray(data) ? data : 
+                          data.history ? data.history : [];
+      setCrackerHistory(historyArray);
+    } catch (error) {
+      console.error('Cracker history error:', error);
+      setCrackerHistory([]);
+      setError(error.message);
     }
   };
 
@@ -68,16 +100,16 @@ export const Dashboard = () => {
             <img src="../../../media/logo.png" alt="CrackAlyzer Logo" className="nav-logo" />
           </Link>
           <div className="nav-links">
-            <Link to="/check-breach" className="nav-link">Breach Checker</Link>
             <Link to="/analyze" className="nav-link">Password Analyzer</Link>
+            <Link to="/check-breach" className="nav-link">Breach Checker</Link>
+            <Link to="/password-cracker" className="nav-link">Password Cracker</Link>
             <button onClick={handleLogout} className="nav-link nav-link-danger">Logout</button>
           </div>
         </nav>
       </header>
 
-      <main className="main-content">
-        <div className="dashboard-grid">
-          {/* Left Column - Password Analysis History */}
+      <main className="dashboard-content">
+        <div className="history-grid">
           <div className="history-section">
             <h2 className="section-title">Password Analysis History</h2>
             <div className="history-content">
@@ -145,7 +177,40 @@ export const Dashboard = () => {
             </div>
           </div>
 
-          {/* Right Column - Breach Check History */}
+          <div className="history-section">
+            <h2 className="section-title">Password Cracker History</h2>
+            <div className="history-content">
+              {isLoading ? (
+                <div className="loading-state">Loading...</div>
+              ) : error ? (
+                <div className="error-state">{error}</div>
+              ) : crackerHistory.length === 0 ? (
+                <p className="no-data">No cracker history available</p>
+              ) : (
+                crackerHistory.map((item, index) => (
+                  <div key={index} className="history-card">
+                    <div className="card-header bg-gray-100">
+                      <span className="timestamp text-gray-600">
+                        {new Date(item.timestamp).toLocaleString()}
+                      </span>
+                      <span className="hash-type-badge">{item.hash_type}</span>
+                    </div>
+                    <div className="card-content bg-white p-4">
+                      <div className="hash-display">
+                        <strong>Hash:</strong>
+                        <span className="hash-text">{item.hash_string}</span>
+                      </div>
+                      <div className="decrypted-display">
+                        <strong>Decrypted:</strong>
+                        <span className="decrypted-text">{item.decrypted_string}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
           <div className="history-section">
             <h2 className="section-title">Breach Check History</h2>
             <div className="history-content">
@@ -153,33 +218,26 @@ export const Dashboard = () => {
                 <div className="loading-state">Loading...</div>
               ) : error ? (
                 <div className="error-state">{error}</div>
-              ) : breachHistory.length > 0 ? (
+              ) : breachHistory.length === 0 ? (
+                <p className="no-data">No breach history available</p>
+              ) : (
                 breachHistory.map((item, index) => (
                   <div key={index} className="history-card">
                     <div className="card-header bg-gray-100">
                       <span className="timestamp text-gray-600">
                         {new Date(item.timestamp).toLocaleString()}
                       </span>
-                      <span className={`status-badge ${item.count > 0 ? 'leaked' : 'safe'}`}>
-                        {item.status}
-                      </span>
                     </div>
                     <div className="card-content bg-white p-4">
-                      <div className="password-display">
-                        <strong>Password:</strong>
-                        <span className="password-text">{item.password || 'N/A'}</span>
+                      <div className="breach-count">
+                        Found in {item.count} breaches
                       </div>
-                      <p className="breach-message">{item.message}</p>
-                      {item.count > 0 && (
-                        <p className="breach-count text-red-600">
-                          Found in {item.count.toLocaleString()} breaches
-                        </p>
-                      )}
+                      <div className="breach-message">
+                        {item.message}
+                      </div>
                     </div>
                   </div>
                 ))
-              ) : (
-                <p className="no-data">No breach check history available</p>
               )}
             </div>
           </div>
