@@ -189,19 +189,22 @@ Now you’re ready to explore the platform!
 <h3> API Endpoints:</h3>
 
 | METHOD  | ROUTE                             | FUNCTIONALITY                  | ACCESS              |
-|---------|-----------------------------------|--------------------------------|---------------------|
-| POST    | /users/signup/                    | Register a new user            | All users           |
-| GET     | /users/me/                        | Retrieve current user details  | Authenticated users |
-| POST    | /auth/login/                      | Login user using JWT           | All users           |
-| POST    | /auth/refresh-token/              | Refresh JWT token              | All users           |
-| POST    | /auth/password-reset/request/     | Request a password reset       | All users           |
-| POST    | /auth/password-reset/confirm/     | Confirm password reset         | All users           |
-| GET     | /auth/token-info/                 | Retrieve JWT token details     | All users           |
-| POST    | /analyze/                         | Analyze password strength      | Authenticated users |
-| POST    | /breach-checker/                  | Check password breaches        | Authenticated users |
-| POST    | /password-cracker/                | Test password security         | Authenticated users |
-| DELETE  | /auth/user/delete/{user_id}/      | Delete a user account          | Superuser           |
-| GET     | /docs/                            | View API documentation         | All users           |
+|--------|-----------------------------------|---------------------------|---------------------|
+| POST   | /users/signup/                    | Register a new user       | All users          |
+| POST   | /users/me/                        | Retrieve current user details | Authenticated users|
+| POST   | /auth/login/                      | Login user using JWT      | All users          |
+| POST   | /auth/refresh-token/              | Refresh JWT token         | All users          |
+| POST   | /auth/password-reset/request/     | Request a password reset  | All users          |
+| POST   | /auth/password-reset/confirm/     | Confirm password reset    | All users          |
+| GET    | /auth/token-info/                 | Retrieve JWT token details| All users          |
+| POST   | /analyze/                         | Analyze password strength | Authenticated users|
+| POST   | /analyze/history                  | History Of Analyze password strength | Authenticated users|
+| POST   | /check-breach                   | Check password breaches   | Authenticated users|
+| POST   | /check-breach/history                   | History Of password breaches   | Authenticated users|
+| POST   | /password-cracker                 | Test password security    | Authenticated users|
+| POST   | /password-cracker/history                 |History of Test password security    | Authenticated users|
+| DELETE | /auth/user/delete/{user_id}/      | Delete a user account    | Superuser           |
+| GET    | /docs/                            | View API documentation    | All users          |
 
 <h3> Authentification: </h3>
 <img src= "https://imgur.com/XDPYZhO.png">
