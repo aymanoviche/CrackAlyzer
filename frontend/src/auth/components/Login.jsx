@@ -58,6 +58,7 @@ export const Login = () => {
               <>
                 <Link to="/analyze" className="nav-link">Password Analyzer</Link>
                 <Link to="/check-breach" className="nav-link">Breach Checker</Link>
+                <Link to="/password-cracker" className="dashboard-link">Password Cracker</Link>
                 <Link to="/dashboard" className="nav-link">Dashboard</Link>
                 <button onClick={handleLogout} className="nav-link nav-link-danger">Logout</button>
               </>

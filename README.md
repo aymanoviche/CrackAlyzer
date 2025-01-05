@@ -52,7 +52,7 @@
   <summary>More images from the project</summary>
   <img src="https://i.imgur.com/5BfLcpd.png" alt="Logo" width="" height="">
   <img src="https://imgur.com/6yrTA6T.png" alt="Logo" width="" height="">
-  <img src="https://imgur.com/6jwnw8y.png" alt="Logo" width="" height="">
+  <img src="https://imgur.com/Zqr7VCp.png" alt="Logo" width="" height="">
 </details>
 
 
@@ -223,7 +223,7 @@ Now you’re ready to explore the platform!
 - [x] -   **Responsive Frontend**: Ensure the React frontend is fully responsive across devices.
 - [x] -   **Password Breach Checker**: Add functionality to check for known password breaches.
 - [x] -   **Dashboard With History**: Develop a superuser dashboard for user management and monitoring.
-- [ ] -   **Password Cracker**: Provide a hash-based password cracking feature for security testing.
+- [x] -   **Password Cracker**: Provide a hash-based password cracking feature for security testing.
 - [ ] -   **Email Verification**: Implement email verification for new users after signup.
 - [ ] -   **Two-Factor Authentication (2FA)**: Enhance login security with 2FA integration.
 
@@ -262,6 +262,9 @@ Oussama Fannouch - [@OussamaFannouch](https://www.linkedin.com/in/oussamafannouc
 Ayman Erroussi - [@ErroussiAyman](https://www.linkedin.com/in/ayman-erroussi/) - erroussiayman@gmail.com
 
 Project Link: [https://github.com/OussamaFannouch/CrackAlyzer](https://github.com/OussamaFannouch/CrackAlyzer)
+
+Project Link: [https://github.com/aymanoviche/CrackAlyzer](https://github.com/aymanoviche/CrackAlyzer)
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
