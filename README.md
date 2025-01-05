@@ -126,7 +126,7 @@ Before you begin, ensure you have the following installed on your system:
         
         ```bash
         python -m venv env
-        source env/bin/activate  # For Linux/macOS
+        source env/Scripts/activate  # For Linux/macOS
         .\env\Scripts\activate  # For Windows
         ```
         
