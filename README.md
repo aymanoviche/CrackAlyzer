@@ -4,7 +4,7 @@
     <img src="https://raw.githubusercontent.com/OussamaFannouch/CrackAlyzer/refs/heads/main/frontend/media/upper_ic.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">CrackAlyzer.</h3>
+  <h3 align="center">CrackAlyzer</h3>
 
   <p align="center">
     A secure and modular platform to analyze password strength, and Crack passwords, and check if your password has been leaked, built with FastAPI, ReactJS, and MongoDB for robust performance and scalability!    <br />
