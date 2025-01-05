@@ -29,3 +29,4 @@ class HashAnalyzer:
         except Exception:
             return False
         return False
+    

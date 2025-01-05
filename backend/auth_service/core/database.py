@@ -12,6 +12,7 @@ db = client[settings.MONGO_INITDB_DATABASE]
 User = db.users
 PasswordAnalyzeHistory = db.password_analyze_history
 BreachHistory = db.breach_history
+PasswordCrackerHistory = db.password_cracker_history
 
 def get_db():
     yield db

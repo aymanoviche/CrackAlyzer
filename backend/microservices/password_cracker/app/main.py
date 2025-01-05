@@ -1,12 +1,25 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, status, Depends, APIRouter
 import httpx
 from bs4 import BeautifulSoup
 import base64
-from hashidentifer import HashAnalyzer
+from backend.microservices.password_cracker.app.hashidentifer import HashAnalyzer
+import asyncio
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+from backend.auth_service.core.database import PasswordCrackerHistory
+from backend.auth_service.core.security import oauth2_scheme, get_current_user
+from backend.auth_service.users.models import UserModel
 
-app = FastAPI()
+app = FastAPI(title="Password Cracker Microservice")
+process_pool = ProcessPoolExecutor(max_workers=5)
+thread_pool = ThreadPoolExecutor(max_workers=5)
 
-@app.get("/decrypt-hash/{hash_string}")
+cracker_router = APIRouter(
+    prefix="/cracker",
+    tags=["crack"],
+    responses={404: {"description": "Not found"}},
+)
+
+@cracker_router.get("/decrypt-hash/{hash_string}")
 async def decrypt_hash(hash_string: str):
     hash_types = HashAnalyzer.identify_hash_type(hash_string)
     
@@ -40,7 +53,7 @@ async def decrypt_md5(md5_hash: str):
     string_link = paragraph.find("a", class_="String")
     if string_link:
         decrypted_string = string_link.text
-        return {"The type of your hash is : MD5": md5_hash, "Decrypted hash": decrypted_string}
+        return {"md5_hash": md5_hash, "decrypted_string": decrypted_string}
     
     raise HTTPException(status_code=404, detail="Decrypted string not found.")
 
@@ -62,7 +75,7 @@ async def decrypt_sha1(sha1_hash: str):
     string_link = paragraph.find("a", class_="String")
     if string_link:
         decrypted_string = string_link.text
-        return {"The type of your hash is : SHA1": sha1_hash, "Decrypted hash": decrypted_string}
+        return {"sha1_hash": sha1_hash, "decrypted_string": decrypted_string}
     
     raise HTTPException(status_code=404, detail="Decrypted string not found.")
 
@@ -73,3 +86,29 @@ async def decode_base64(base64_input: str):
         return {"The type of your hash is : BASE64": base64_input, "Decoded hash": decoded_string}
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Invalid Base64 input: {e}")
+
+@cracker_router.get("/history", status_code=status.HTTP_200_OK)
+async def get_password_cracker_history(token: str = Depends(oauth2_scheme), 
+                                        current_user: UserModel = Depends(get_current_user)):
+    try:
+        loop = asyncio.get_running_loop()
+        # Use thread pool for DB query
+        history = await loop.run_in_executor(
+            thread_pool,
+            lambda: list(PasswordCrackerHistory.find({"user_id": current_user.id}, {"_id": 0}))
+        )
+        
+        # Log the retrieved history for debugging
+        print(f"Retrieved history: {history}")
+        
+        # Decrypt hashes in history
+        for entry in history:
+            hash_string = entry.get("hash_string")
+            if hash_string:
+                entry["decrypted"] = await decrypt_hash(hash_string)
+        
+        return {"history": history}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+app.include_router(cracker_router)
