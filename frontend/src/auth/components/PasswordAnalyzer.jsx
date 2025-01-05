@@ -105,7 +105,7 @@ export const PasswordAnalyzer = () => {
                   <ul className="details-list">
                     <li className="output-details">
                       <span>Length</span>
-                      <span>{analysis.length} characters</span>
+                      <span>{analysis.details?.length}</span>
                     </li>
                     <li className="output-details">
                       <span>Has Lowercase</span>
