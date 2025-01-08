@@ -9,7 +9,9 @@ export const Dashboard = () => {
   const [breachHistory, setBreachHistory] = useState([]);
   const [crackerHistory, setCrackerHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [analyzeError, setAnalyzeError] = useState(null);
+  const [breachError, setBreachError] = useState(null);
+  const [crackerError, setCrackerError] = useState(null);
 
   useEffect(() => {
     if (token) {
@@ -39,7 +41,7 @@ export const Dashboard = () => {
     } catch (error) {
       console.error('Analyze history error:', error);
       setAnalyzeHistory([]);
-      setError(error.message);
+      setAnalyzeError(error.message);
     }
   };
 
@@ -61,7 +63,7 @@ export const Dashboard = () => {
     } catch (error) {
       console.error('Breach history error:', error);
       setBreachHistory([]);
-      setError(error.message);
+      setBreachError(error.message);
     }
   };
 
@@ -83,7 +85,7 @@ export const Dashboard = () => {
     } catch (error) {
       console.error('Cracker history error:', error);
       setCrackerHistory([]);
-      setError(error.message);
+      setCrackerError(error.message);
     }
   };
 
@@ -115,8 +117,8 @@ export const Dashboard = () => {
             <div className="history-content">
               {isLoading ? (
                 <div className="loading-state">Loading...</div>
-              ) : error ? (
-                <div className="error-state">{error}</div>
+              ) : analyzeError ? (
+                <div className="error-state">{analyzeError}</div>
               ) : analyzeHistory.length > 0 ? (
                 analyzeHistory.map((item, index) => (
                   <div key={index} className="history-card">
@@ -182,8 +184,8 @@ export const Dashboard = () => {
             <div className="history-content">
               {isLoading ? (
                 <div className="loading-state">Loading...</div>
-              ) : error ? (
-                <div className="error-state">{error}</div>
+              ) : crackerError ? (
+                <div className="error-state">{crackerError}</div>
               ) : crackerHistory.length === 0 ? (
                 <p className="no-data">No cracker history available</p>
               ) : (
@@ -216,8 +218,8 @@ export const Dashboard = () => {
             <div className="history-content">
               {isLoading ? (
                 <div className="loading-state">Loading...</div>
-              ) : error ? (
-                <div className="error-state">{error}</div>
+              ) : breachError ? (
+                <div className="error-state">{breachError}</div>
               ) : breachHistory.length === 0 ? (
                 <p className="no-data">No breach history available</p>
               ) : (
