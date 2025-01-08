@@ -12,3 +12,4 @@ uvicorn
 python-multipart
 httpx
 asyncio
+bs4
