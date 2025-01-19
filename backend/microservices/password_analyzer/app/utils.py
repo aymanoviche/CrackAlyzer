@@ -60,10 +60,13 @@ def analyze_password_strength(password):
         strength = "Weak"
     elif overall_strength < 0.7:
         strength = "Moderate"
-    elif overall_strength < 1 and ( complexity_score == 1 or  complexity_score == 0.75):
+    elif overall_strength < 1 and complexity_score >=0.25:
         strength = "Strong"
     elif overall_strength == 1 and complexity_score == 1:
         strength = "Very Strong"
+    else:
+        strength = "Moderate"  # Valeur par défaut
+
     
     return {
         "strength": strength,
